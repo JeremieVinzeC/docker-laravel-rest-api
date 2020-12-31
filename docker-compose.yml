@@ -14,19 +14,19 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/deafult.conf
     depends_on:
       - php 
-      - mysql
+      - db
     networks: 
       - laravel
 
-  mysql:
-    image: mysql:5.7.29
-    container_name: mysql
+  db:
+    image: mariadb
+    container_name: db
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: homestead
+      MYSQL_DATABASE: dotr
       MYSQL_USER: homestead
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: secret
@@ -35,7 +35,7 @@ services:
     networks:
       - laravel
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./db:/var/lib/mysql
 
   php:
     build:
@@ -50,7 +50,7 @@ services:
       - laravel
   
   composer:
-    image: composer:2.0
+    image: composer:latest
     container_name: composer
     volumes:
       - ./src:/var/www/html
@@ -76,7 +76,7 @@ services:
     volumes:
       - ./src:/var/www/html
     depends_on:
-      - mysql
+      - db
     working_dir: /var/www/html
     entrypoint: ['php', '/var/www/html/artisan']
     networks:
