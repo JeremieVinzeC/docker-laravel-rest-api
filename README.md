@@ -16,13 +16,19 @@ Open up your browser of choice to [http://localhost:8088](http://localhost:8088)
 
 **Artisan:**
 <<<<<<< HEAD
+<<<<<<< HEAD
 - `docker-compose run --rm artisan migrate` 
 
 **Node:**
 - `docker-compose run --rm npm run dev` 
 =======
+=======
+>>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
 - `docker-compose run --rm artisan migrate`
 
 **Node:**
 - `docker-compose run --rm npm run dev`
+<<<<<<< HEAD
+>>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
+=======
 >>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
