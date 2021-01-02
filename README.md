@@ -12,3 +12,6 @@ First add/clone your entire Laravel project to the `src` folder, then open a ter
 
 **Artisan:**
 - `docker-compose run --rm artisan migrate` 
+
+**Node:**
+- `docker-compose run --rm npm run dev` 
