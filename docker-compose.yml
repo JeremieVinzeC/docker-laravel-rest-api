@@ -5,20 +5,23 @@ networks:
 
 services:
   nginx:
+    restart: always
     image: nginx:alpine
     container_name: nginx
     ports:
       - "8088:80"
       - "443:443"
     volumes:
-      - ./src:/var/www
-      - ./docker/nginx/:/etc/nginx/conf.d/
+      - ./src:/var/www/
+      - ./docker/nginx/:/etc/nginx/conf.d
     depends_on:
-      - app 
+      - app
+      - mysql
     networks: 
       - laravel
 
   mysql:
+    restart: always
     image: mysql:5.7.29
     container_name: mysql
     restart: unless-stopped
@@ -39,33 +42,26 @@ services:
       - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
 
   app:
+    restart: always
     build:
       context: docker/php
       dockerfile: Dockerfile
     container_name: app
+    ports:
+      - "9000:9000"
     volumes:
-      - ./src:/var/www
+      - ./src:/var/www/
       - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     depends_on:
       - mysql
     networks:
       - laravel
 
-  scheduler:
-    restart: always
-    depends_on:
-      - mysql
-    environment:
-      CONTAINER_ROLE: "scheduler"
-    volumes:
-      - "./src:/var/www"
-    networks:
-      - app-network
-
   node:
+    restart: always
     build:
       context: docker/node
       dockerfile: Dockerfile
     container_name: node
     volumes:
-      - ./src:/var/www
+      - ./src:/var/www/

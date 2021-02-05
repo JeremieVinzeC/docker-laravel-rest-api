@@ -3,6 +3,12 @@ FROM php:8.0.0-fpm-alpine
 # Set working directory
 WORKDIR /var/www
 
+RUN apk update && apk add libzip-dev libpng-dev
+
+RUN docker-php-ext-install zip
+
+RUN docker-php-ext-install gd
+
 RUN docker-php-ext-install pdo pdo_mysql && \
     apk add bash git
 
