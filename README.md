@@ -11,30 +11,14 @@ Open up your browser of choice to [http://localhost:8088](http://localhost:8088)
 
 **Your Laravel app needs to be in the src directory first before bringing the containers up, otherwise the artisan container will not build, as it's missing the appropriate file.** 
 
-**Composer:**
-- `docker-compose run --rm composer update`
+**PHP & Composer Commands:**
+- `docker-compose exec app php artisan <command>`
+- `docker-compose exec app composer <command>`
 
-**Artisan:**
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-- `docker-compose run --rm artisan migrate` 
+**Node Commands:**
+- `docker-compose exec node npm <command>`
 
-**Node:**
-- `docker-compose run --rm npm run dev` 
-=======
-=======
->>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
-=======
->>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
-- `docker-compose run --rm artisan migrate`
-
-**Node:**
-- `docker-compose run --rm npm run dev`
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
-=======
->>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
-=======
->>>>>>> c50b6135dbae9c6ac3871474a3d957dbe56d07d1
+**Pre-defined Commands:**
+- `docker-compose exec app setup`
+- `docker-compose exec app permissions`
+- `docker-compose exec app fix`

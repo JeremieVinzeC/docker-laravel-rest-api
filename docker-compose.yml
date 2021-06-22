@@ -1,24 +1,27 @@
-version: '3'
+version: '3.7'
 
 networks:
   laravel:
 
 services:
   nginx:
-    image: nginx:stable-alpine
+    restart: always
+    image: nginx:alpine
     container_name: nginx
     ports:
       - "8088:80"
+      - "443:443"
     volumes:
-      - ./src:/var/www/html/
-      - ./nginx/default.conf:/etc/nginx/conf.d/deafult.conf
+      - ./src:/var/www/
+      - ./docker/nginx/:/etc/nginx/conf.d
     depends_on:
-      - php 
+      - app
       - mysql
     networks: 
       - laravel
 
   mysql:
+    restart: always
     image: mysql:5.7.29
     container_name: mysql
     restart: unless-stopped
@@ -35,49 +38,30 @@ services:
     networks:
       - laravel
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
 
-  php:
+  app:
+    restart: always
     build:
-      context: .
+      context: docker/php
       dockerfile: Dockerfile
-    container_name: php
-    volumes:
-      - ./src:/var/www/html
+    container_name: app
     ports:
       - "9000:9000"
-    networks:
-      - laravel
-  
-  composer:
-    image: composer:2.0
-    container_name: composer
     volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    depends_on:
-      - php
-    networks:
-      - laravel
-
-  npm:
-    image: node:current
-    container_name: npm
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    entrypoint: ['npm']
-
-  artisan:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: artisan
-    volumes:
-      - ./src:/var/www/html
+      - ./src:/var/www/
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     depends_on:
       - mysql
-    working_dir: /var/www/html
-    entrypoint: ['php', '/var/www/html/artisan']
     networks:
       - laravel
+
+  node:
+    restart: always
+    build:
+      context: docker/node
+      dockerfile: Dockerfile
+    container_name: node
+    volumes:
+      - ./src:/var/www/
